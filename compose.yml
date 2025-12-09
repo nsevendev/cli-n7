@@ -1,0 +1,14 @@
+services:
+  cli_n7__rust_dev:
+    build: .
+    image: cli_n7_rust_dev
+    container_name: cli_n7_rust_dev
+    volumes:
+      - .:/app
+      - cli_n7_cargo_cache:/usr/local/cargo/registry
+      - cli_n7_target_cache:/app/target
+    working_dir: /app
+
+volumes:
+  cli_n7_cargo_cache:
+  cli_n7_target_cache:
