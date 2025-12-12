@@ -7,13 +7,13 @@ CLI pour automatiser et simplifier les opérations Docker Compose de l'entrepris
 ### Installation rapide (recommandée)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nseven/cli-n7/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/nsevendev/cli-n7/main/install.sh | bash
 ```
 
 ### Via Cargo
 
 ```bash
-cargo install --git https://github.com/nseven/cli-n7
+cargo install --git https://github.com/nsevendev/cli-n7
 ```
 
 ### Depuis les sources

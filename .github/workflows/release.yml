@@ -78,11 +78,9 @@ jobs:
           mv ${{ matrix.asset_name }}.tar.gz ../../..
 
       - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        uses: svenstaro/upload-release-action@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./${{ matrix.asset_name }}.tar.gz
-          asset_name: ${{ matrix.asset_name }}.tar.gz
-          asset_content_type: application/gzip
+          repo_token: ${{ secrets.GH_PAT }}
+          file: ${{ matrix.asset_name }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
