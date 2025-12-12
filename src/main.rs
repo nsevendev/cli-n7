@@ -19,7 +19,7 @@ fn styles() -> Styles {
 }
 
 #[derive(Parser)]
-#[command(name = "n7", about = "\x1b[33mCli de l'entreprsie nseven\x1b[0m", styles = styles())]
+#[command(name = "n7", about = "\x1b[33mCli nseven\x1b[0m", styles = styles())]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
