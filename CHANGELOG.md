@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/nsevendev/cli-n7/compare/v0.4.0...v0.5.0) (2025-12-12)
+
+
+### Features
+
+* add command cargo, fmt, clippy, test, check ([3502b71](https://github.com/nsevendev/cli-n7/commit/3502b71c83367642772d21eda6573136098cc116))
+
 ## [0.4.0](https://github.com/nsevendev/cli-n7/compare/v0.3.0...v0.4.0) (2025-12-12)
 
 
