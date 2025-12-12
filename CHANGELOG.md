@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/nsevendev/cli-n7/compare/v0.2.5...v0.3.0) (2025-12-12)
+
+
+### Features
+
+* add command down for docker compose ([5ed68f8](https://github.com/nsevendev/cli-n7/commit/5ed68f885f897be4d3e93ffd3979257bb4f21709))
+
 ## [0.2.5](https://github.com/nsevendev/cli-n7/compare/v0.2.4...v0.2.5) (2025-12-12)
 
 
