@@ -1,0 +1,59 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # 1. Tests (toujours en premier)
+  test:
+    name: Tests & Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start Docker container
+        run: docker compose up -d
+
+      - name: Check formatting
+        run: docker exec cli_n7_rust_dev cargo fmt --check
+
+      - name: Run clippy
+        run: docker exec cli_n7_rust_dev cargo clippy -- -D warnings
+
+      - name: Run tests
+        run: docker exec -e N7_DRY_RUN=1 cli_n7_rust_dev cargo test
+
+      - name: Stop Docker container
+        if: always()
+        run: docker compose down
+
+  # 2. Release Please (seulement si tests OK et push sur main)
+  release-please:
+    name: Release Please
+    needs: test  # ← Attend que les tests passent !
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GH_PAT }}
+          release-type: rust
+          package-name: n7
+
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
