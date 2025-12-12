@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/nsevendev/cli-n7/compare/v0.2.2...v0.2.3) (2025-12-12)
+
+
+### Bug Fixes
+
+* change app build binary in ci ([d0aca13](https://github.com/nsevendev/cli-n7/commit/d0aca133727a0f1ac0e7ff5249c5bf59c80d8b0c))
+
 ## [0.2.2](https://github.com/nsevendev/cli-n7/compare/v0.2.1...v0.2.2) (2025-12-12)
 
 
