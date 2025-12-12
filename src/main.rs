@@ -1,23 +1,40 @@
 mod docker_compose;
 mod resolvers;
 
+use crate::docker_compose::DockerComposeCommands;
+use clap::builder::styling::{AnsiColor, Styles};
 use clap::{Parser, Subcommand};
 use colored::Colorize;
-use crate::docker_compose::DockerComposeCommands;
+
+fn styles() -> Styles {
+    Styles::styled()
+        .context(AnsiColor::Yellow.on_default())
+        .header(AnsiColor::Magenta.on_default())
+        .usage(AnsiColor::Magenta.on_default())
+        .literal(AnsiColor::Green.on_default())
+        .placeholder(AnsiColor::Yellow.on_default())
+        .error(AnsiColor::Red.on_default())
+        .valid(AnsiColor::Green.on_default())
+        .invalid(AnsiColor::Yellow.on_default())
+}
 
 #[derive(Parser)]
-#[command(name = "n7", about= "Cli de l'entreprsie nseven")]
+#[command(name = "n7", about = "\x1b[33mCli de l'entreprsie nseven\x1b[0m", styles = styles())]
 struct Cli {
     #[command(subcommand)]
-    command: Commands
+    command: Commands,
 }
 
 #[derive(Subcommand)]
 enum Commands {
-    #[command(long_flag = "version", short_flag = 'v')]
+    #[command(
+        long_flag = "version",
+        short_flag = 'v',
+        about = "\x1b[33mPrint Version info\x1b[0m"
+    )]
     Version,
 
-    #[command(name= "dc")]
+    #[command(name = "dc", about = "\x1b[33mExecute docker compose\x1b[0m")]
     DockerCompose {
         #[command(subcommand)]
         action: DockerComposeCommands,
@@ -41,12 +58,14 @@ fn main() {
 }
 
 fn get_version() -> String {
-    format!("{} - {}",
-            format!("{} v{}",
-                    env!("CARGO_PKG_NAME"),
-                    env!("CARGO_PKG_VERSION")
-            ).green().bold(),
-            format!("rust v{}", env!("CARGO_PKG_RUST_VERSION")).blue().bold()
+    format!(
+        "{} - {}",
+        format!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"))
+            .green()
+            .bold(),
+        format!("rust v{}", env!("CARGO_PKG_RUST_VERSION"))
+            .blue()
+            .bold()
     )
 }
 
@@ -56,6 +75,7 @@ mod tests {
 
     #[test]
     fn test_get_version_contains_name_and_version() {
+        let _lock = n7::test_utils::lock_test();
         let version = get_version();
         assert!(version.contains("n7 v"));
         assert!(version.contains("rust"));

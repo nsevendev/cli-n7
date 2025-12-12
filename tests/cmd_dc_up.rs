@@ -3,8 +3,10 @@ use predicates::prelude::*;
 
 #[test]
 fn test_dc_up_cmd() {
+    let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
-    cmd.args(&["dc", "u"])
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "u"])
         .assert()
         .success()
         .stdout(predicate::str::contains("up -d"));
@@ -12,8 +14,10 @@ fn test_dc_up_cmd() {
 
 #[test]
 fn test_dc_up_with_build() {
+    let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
-    cmd.args(&["dc", "u", "--build"])
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "u", "--build"])
         .assert()
         .success()
         .stdout(predicate::str::contains("--build"));
@@ -21,8 +25,10 @@ fn test_dc_up_with_build() {
 
 #[test]
 fn test_dc_up_with_no_detach() {
+    let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
-    cmd.args(&["dc", "u", "--no-detach"])
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "u", "--no-detach"])
         .assert()
         .success()
         .stdout(predicate::str::contains("up"))
@@ -31,8 +37,10 @@ fn test_dc_up_with_no_detach() {
 
 #[test]
 fn test_dc_up_with_build_short_args() {
+    let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
-    cmd.args(&["dc", "u", "-b"])
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "u", "-b"])
         .assert()
         .success()
         .stdout(predicate::str::contains("--build"));
@@ -40,8 +48,10 @@ fn test_dc_up_with_build_short_args() {
 
 #[test]
 fn test_dc_up_with_no_detach_short_args() {
+    let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
-    cmd.args(&["dc", "u", "-n"])
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "u", "-n"])
         .assert()
         .success()
         .stdout(predicate::str::contains("up"))

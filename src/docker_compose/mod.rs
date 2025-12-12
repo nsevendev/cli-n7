@@ -1,5 +1,5 @@
 mod builder;
-mod service;
 mod command;
+mod service;
 
 pub use command::DockerComposeCommands;

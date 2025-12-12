@@ -3,6 +3,7 @@ use predicates::prelude::*;
 
 #[test]
 fn test_cmd_version() {
+    let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
     cmd.arg("version")
         .assert()

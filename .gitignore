@@ -28,4 +28,7 @@ target
 **/.idea
 **/.vscode
 
-**/tmp/test
+**/tmp/**
+!**/tmp/.gitkeep
+
+**/coverage
