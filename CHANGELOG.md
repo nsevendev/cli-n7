@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/nsevendev/cli-n7/compare/v0.3.0...v0.4.0) (2025-12-12)
+
+
+### Features
+
+* [#21](https://github.com/nsevendev/cli-n7/issues/21) add command exec for docker compose ([0cabb88](https://github.com/nsevendev/cli-n7/commit/0cabb889fabc469973c4c1536ac6b54e4d8f1ab3))
+* [#9](https://github.com/nsevendev/cli-n7/issues/9) add command logs for docker compose ([3071635](https://github.com/nsevendev/cli-n7/commit/3071635946402ac2d270651f82c3b7fe4d7372a4))
+
 ## [0.3.0](https://github.com/nsevendev/cli-n7/compare/v0.2.5...v0.3.0) (2025-12-12)
 
 
