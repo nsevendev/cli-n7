@@ -3,7 +3,11 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
-# coverage pour les tests
-RUN rustup component add llvm-tools-preview
+
+# Composants pour linting et coverage
+RUN rustup component add llvm-tools-preview rustfmt clippy
+
+# Outils de coverage
 RUN cargo install cargo-llvm-cov
+
 CMD ["tail", "-f", "/dev/null"]
