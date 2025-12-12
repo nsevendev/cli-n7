@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/nsevendev/cli-n7/compare/v0.2.0...v0.2.1) (2025-12-12)
+
+
+### Bug Fixes
+
+* add target build for macos intel ([06db75f](https://github.com/nsevendev/cli-n7/commit/06db75f0cece05c55664af189f36d8b338d0664d))
+
 ## [0.2.0](https://github.com/nsevendev/cli-n7/compare/v0.1.0...v0.2.0) (2025-12-12)
 
 
