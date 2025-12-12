@@ -1,4 +1,5 @@
 use super::service::up::UpService;
+use crate::docker_compose::service::down::DownService;
 use clap::Subcommand;
 use std::process::Command;
 
@@ -26,6 +27,23 @@ pub enum DockerComposeCommands {
         #[arg(short = 'f', long, help = "\x1b[33mPath to the compose file\x1b[0m")]
         compose_file: Option<String>,
     },
+
+    #[command(name = "d", about = "\x1b[33mCommand 'down' with options\x1b[0m")]
+    Down {
+        #[arg(
+            short = 'v',
+            long = "rmv",
+            help = "\x1b[33mDelete all volume of service in compose file\x1b[0m"
+        )]
+        rmvolumes: bool,
+
+        #[arg(
+            short = 'o',
+            long = "rmo",
+            help = "\x1b[33mDelete container orphans not in compose file\x1b[0m"
+        )]
+        rmorphans: bool,
+    },
 }
 
 impl DockerComposeCommands {
@@ -42,7 +60,29 @@ impl DockerComposeCommands {
 
                 println!("Command execute : {}", args.join(" "));
 
-                // mode dry-run (pour les tests), on ne lance pas la commande
+                // mode dry run (pour les tests), on ne lance pas la commande
+                if std::env::var("N7_DRY_RUN").is_ok() {
+                    return Ok(());
+                }
+
+                // Exécute la commande
+                let status = Command::new(&args[0]).args(&args[1..]).status()?;
+
+                if status.success() {
+                    Ok(())
+                } else {
+                    Err(format!("Command failed with exit code: {:?}", status.code()).into())
+                }
+            }
+
+            DockerComposeCommands::Down {
+                rmvolumes,
+                rmorphans,
+            } => {
+                let args = DownService::down(*rmvolumes, *rmorphans);
+                println!("Command execute : {}", args.join(" "));
+
+                // mode dry run (pour les tests), on ne lance pas la commande
                 if std::env::var("N7_DRY_RUN").is_ok() {
                     return Ok(());
                 }
