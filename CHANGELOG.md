@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/nsevendev/cli-n7/compare/v0.2.1...v0.2.2) (2025-12-12)
+
+
+### Bug Fixes
+
+* add ci for create tag and release in main ([de4df26](https://github.com/nsevendev/cli-n7/commit/de4df261c3609622d5c6c4efbc0232fea98af7c2))
+
 ## [0.2.1](https://github.com/nsevendev/cli-n7/compare/v0.2.0...v0.2.1) (2025-12-12)
 
 
