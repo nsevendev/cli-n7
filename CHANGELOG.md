@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/nsevendev/cli-n7/compare/v0.2.3...v0.2.4) (2025-12-12)
+
+
+### Bug Fixes
+
+* bad flow ci ([bef7b72](https://github.com/nsevendev/cli-n7/commit/bef7b7209d6e96d3282820ca5415ea0d2129a8b4))
+
 ## [0.2.3](https://github.com/nsevendev/cli-n7/compare/v0.2.2...v0.2.3) (2025-12-12)
 
 
