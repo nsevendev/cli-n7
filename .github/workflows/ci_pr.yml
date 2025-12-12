@@ -1,0 +1,37 @@
+name: CI/CD_PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Tests & Linting
+    runs-on: ubuntu-latest
+    # Skip les tests si c'est une PR de release-please
+    if: "!startsWith(github.event.pull_request.title, 'chore(main): release')"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start Docker container
+        run: docker compose up -d
+
+      - name: Check formatting
+        run: docker exec cli_n7_rust_dev cargo fmt --check
+
+      - name: Run clippy
+        run: docker exec cli_n7_rust_dev cargo clippy -- -D warnings
+
+      - name: Run tests
+        run: docker exec -e N7_DRY_RUN=1 cli_n7_rust_dev cargo test
+
+      - name: Stop Docker container
+        if: always()
+        run: docker compose down
+
+permissions:
+  contents: write
+  pull-requests: write
