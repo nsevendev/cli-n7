@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/nsevendev/cli-n7/compare/v0.1.0...v0.2.0) (2025-12-12)
+
+
+### Features
+
+* change title cli ([3f1a160](https://github.com/nsevendev/cli-n7/commit/3f1a160fe75acec7bc63d55045ad8e770ac70aa9))
+
 ## 0.1.0 (2025-12-12)
 
 
