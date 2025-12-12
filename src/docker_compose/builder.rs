@@ -26,6 +26,11 @@ impl DockerComposeBuilder {
         self
     }
 
+    pub fn exec(mut self) -> Self {
+        self.args.extend(vec!["exec".to_string()]);
+        self
+    }
+
     pub fn volumes(mut self) -> Self {
         self.args.push("-v".to_string());
         self
@@ -58,6 +63,16 @@ impl DockerComposeBuilder {
 
     pub fn add_path_file_compose(mut self, path: String) -> Self {
         self.args.extend(vec!["-f".to_string(), path]);
+        self
+    }
+
+    pub fn add_service(mut self, service: String) -> Self {
+        self.args.push(service);
+        self
+    }
+
+    pub fn add_shell(mut self, shell: String) -> Self {
+        self.args.push(shell);
         self
     }
 }
@@ -172,5 +187,41 @@ mod tests {
             dcb.args,
             vec!["--env-file", ".env", "-f", "docker/compose.yml", "up", "-d"]
         );
+    }
+
+    #[test]
+    fn create_exec_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new().exec();
+        assert_eq!(dcb.args, vec!["exec"]);
+    }
+
+    #[test]
+    fn create_exec_with_service_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .exec()
+            .add_service("my_service".to_string());
+        assert_eq!(dcb.args, vec!["exec", "my_service"]);
+    }
+
+    #[test]
+    fn create_exec_with_service_and_shell_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .exec()
+            .add_service("my_service".to_string())
+            .add_shell("bash".to_string());
+        assert_eq!(dcb.args, vec!["exec", "my_service", "bash"]);
+    }
+
+    #[test]
+    fn create_exec_with_service_and_custom_shell_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .exec()
+            .add_service("app".to_string())
+            .add_shell("sh".to_string());
+        assert_eq!(dcb.args, vec!["exec", "app", "sh"]);
     }
 }
