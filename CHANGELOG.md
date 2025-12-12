@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/nsevendev/cli-n7/compare/v0.2.4...v0.2.5) (2025-12-12)
+
+
+### Bug Fixes
+
+* split ci for pr on main ([d329c3e](https://github.com/nsevendev/cli-n7/commit/d329c3ebb289ee2236a31b8f8226c3342538f424))
+
 ## [0.2.4](https://github.com/nsevendev/cli-n7/compare/v0.2.3...v0.2.4) (2025-12-12)
 
 
