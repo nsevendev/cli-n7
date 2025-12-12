@@ -1,5 +1,6 @@
 use super::service::up::UpService;
 use crate::docker_compose::service::down::DownService;
+use crate::docker_compose::service::logs::LogsService;
 use crate::docker_compose::service::shell::ShellService;
 use clap::Subcommand;
 use std::process::Command;
@@ -61,6 +62,19 @@ pub enum DockerComposeCommands {
         )]
         shell: Option<String>,
     },
+
+    #[command(name = "l", about = "\x1b[33mShow logs from services\x1b[0m")]
+    Logs {
+        #[arg(help = "\x1b[33mService name (optional, default: all services)\x1b[0m")]
+        service: Option<String>,
+
+        #[arg(
+            short = 'n',
+            long = "no-follow",
+            help = "\x1b[33mDisable follow mode (default: follow enabled)\x1b[0m"
+        )]
+        no_follow: bool,
+    },
 }
 
 impl DockerComposeCommands {
@@ -116,6 +130,25 @@ impl DockerComposeCommands {
                 let mut args = ShellService::shell(service.clone(), shell.clone());
 
                 args.insert(3, "-it".to_string());
+
+                println!("Command execute : {}", args.join(" "));
+
+                if std::env::var("N7_DRY_RUN").is_ok() {
+                    return Ok(());
+                }
+
+                let status = Command::new(&args[0]).args(&args[1..]).status()?;
+
+                if status.success() {
+                    Ok(())
+                } else {
+                    Err(format!("Command failed with exit code: {:?}", status.code()).into())
+                }
+            }
+
+            DockerComposeCommands::Logs { service, no_follow } => {
+                let follow = !no_follow;
+                let args = LogsService::logs(service.clone(), follow);
 
                 println!("Command execute : {}", args.join(" "));
 

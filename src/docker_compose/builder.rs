@@ -31,6 +31,11 @@ impl DockerComposeBuilder {
         self
     }
 
+    pub fn logs(mut self) -> Self {
+        self.args.extend(vec!["logs".to_string()]);
+        self
+    }
+
     pub fn volumes(mut self) -> Self {
         self.args.push("-v".to_string());
         self
@@ -73,6 +78,11 @@ impl DockerComposeBuilder {
 
     pub fn add_shell(mut self, shell: String) -> Self {
         self.args.push(shell);
+        self
+    }
+
+    pub fn add_follow(mut self) -> Self {
+        self.args.push("-f".to_string());
         self
     }
 }
@@ -223,5 +233,38 @@ mod tests {
             .add_service("app".to_string())
             .add_shell("sh".to_string());
         assert_eq!(dcb.args, vec!["exec", "app", "sh"]);
+    }
+
+    #[test]
+    fn create_logs_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new().logs();
+        assert_eq!(dcb.args, vec!["logs"]);
+    }
+
+    #[test]
+    fn create_logs_with_follow_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new().logs().add_follow();
+        assert_eq!(dcb.args, vec!["logs", "-f"]);
+    }
+
+    #[test]
+    fn create_logs_with_service_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .logs()
+            .add_service("my_service".to_string());
+        assert_eq!(dcb.args, vec!["logs", "my_service"]);
+    }
+
+    #[test]
+    fn create_logs_with_follow_and_service_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .logs()
+            .add_follow()
+            .add_service("app".to_string());
+        assert_eq!(dcb.args, vec!["logs", "-f", "app"]);
     }
 }
