@@ -1,3 +1,4 @@
+mod cargo_cmd;
 mod docker_compose;
 mod resolvers;
 

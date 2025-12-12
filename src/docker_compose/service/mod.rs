@@ -1,3 +1,4 @@
+pub mod cargo_exec;
 pub mod down;
 pub mod logs;
 pub mod shell;
