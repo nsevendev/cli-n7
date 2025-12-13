@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/nsevendev/cli-n7/compare/v0.6.2...v0.6.3) (2025-12-13)
+
+
+### Bug Fixes
+
+* color in file install ([d3cc090](https://github.com/nsevendev/cli-n7/commit/d3cc09024691a8e5a10d407219ec20a006d46bfb))
+
 ## [0.6.2](https://github.com/nsevendev/cli-n7/compare/v0.6.1...v0.6.2) (2025-12-13)
 
 
