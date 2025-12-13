@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/nsevendev/cli-n7/compare/v0.6.3...v0.7.0) (2025-12-13)
+
+
+### Features
+
+* add cargo llvm-cov command (ccov) ([118b8a6](https://github.com/nsevendev/cli-n7/commit/118b8a6f24aa6dde7ec05bf6c9220da7fb930889))
+* add docker exec command (ex) ([40661d3](https://github.com/nsevendev/cli-n7/commit/40661d32c03d4c9fe92fff200302b12b51316750))
+
 ## [0.6.3](https://github.com/nsevendev/cli-n7/compare/v0.6.2...v0.6.3) (2025-12-13)
 
 
