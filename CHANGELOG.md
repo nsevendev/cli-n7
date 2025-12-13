@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/nsevendev/cli-n7/compare/v0.6.1...v0.6.2) (2025-12-13)
+
+
+### Bug Fixes
+
+* change install script and delete emoji ([468e0f0](https://github.com/nsevendev/cli-n7/commit/468e0f0cbd8dfb586f4904a16004ba7b76504516))
+
 ## [0.6.1](https://github.com/nsevendev/cli-n7/compare/v0.6.0...v0.6.1) (2025-12-13)
 
 
