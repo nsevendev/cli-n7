@@ -3,6 +3,7 @@ use crate::docker_compose::service::cargo_exec::CargoExecService;
 use crate::docker_compose::service::down::DownService;
 use crate::docker_compose::service::logs::LogsService;
 use crate::docker_compose::service::shell::ShellService;
+use crate::resolvers::ComposeServices;
 use clap::Subcommand;
 use std::process::Command;
 
@@ -64,17 +65,17 @@ pub enum DockerComposeCommands {
 
     #[command(name = "c", about = "Execute custom cargo command")]
     Cargo {
-        #[arg(help = "Docker service name")]
-        service: String,
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
 
         #[arg(last = true, help = "Cargo command and arguments")]
-        args: Vec<String>,
+        args: Option<Vec<String>>,
     },
 
     #[command(name = "ct", about = "Run cargo test")]
     CargoTest {
-        #[arg(help = "Docker service name")]
-        service: String,
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
 
         #[arg(last = true, help = "Additional arguments for cargo test")]
         args: Option<Vec<String>>,
@@ -82,8 +83,8 @@ pub enum DockerComposeCommands {
 
     #[command(name = "cf", about = "Run cargo fmt")]
     CargoFmt {
-        #[arg(help = "Docker service name")]
-        service: String,
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
 
         #[arg(last = true, help = "Additional arguments for cargo fmt")]
         args: Option<Vec<String>>,
@@ -91,8 +92,8 @@ pub enum DockerComposeCommands {
 
     #[command(name = "cc", about = "Run cargo clippy")]
     CargoClippy {
-        #[arg(help = "Docker service name")]
-        service: String,
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
 
         #[arg(last = true, help = "Additional arguments for cargo clippy")]
         args: Option<Vec<String>>,
@@ -100,8 +101,8 @@ pub enum DockerComposeCommands {
 
     #[command(name = "rcheck", about = "Run fmt, clippy, and test in sequence")]
     Rcheck {
-        #[arg(help = "Docker service name")]
-        service: String,
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
     },
 }
 
@@ -194,7 +195,13 @@ impl DockerComposeCommands {
             }
 
             DockerComposeCommands::Cargo { service, args } => {
-                let cmd_args = CargoExecService::cargo(service.clone(), args.clone());
+                if service.is_none() || args.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let cmd_args =
+                    CargoExecService::cargo(service.clone().unwrap(), args.clone().unwrap());
 
                 println!("Command execute : {}", cmd_args.join(" "));
 
@@ -212,7 +219,12 @@ impl DockerComposeCommands {
             }
 
             DockerComposeCommands::CargoTest { service, args } => {
-                let cmd_args = CargoExecService::test(service.clone(), args.clone());
+                if service.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let cmd_args = CargoExecService::test(service.clone().unwrap(), args.clone());
 
                 println!("Command execute : {}", cmd_args.join(" "));
 
@@ -230,7 +242,12 @@ impl DockerComposeCommands {
             }
 
             DockerComposeCommands::CargoFmt { service, args } => {
-                let cmd_args = CargoExecService::fmt(service.clone(), args.clone());
+                if service.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let cmd_args = CargoExecService::fmt(service.clone().unwrap(), args.clone());
 
                 println!("Command execute : {}", cmd_args.join(" "));
 
@@ -248,7 +265,12 @@ impl DockerComposeCommands {
             }
 
             DockerComposeCommands::CargoClippy { service, args } => {
-                let cmd_args = CargoExecService::clippy(service.clone(), args.clone());
+                if service.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let cmd_args = CargoExecService::clippy(service.clone().unwrap(), args.clone());
 
                 println!("Command execute : {}", cmd_args.join(" "));
 
@@ -266,7 +288,13 @@ impl DockerComposeCommands {
             }
 
             DockerComposeCommands::Rcheck { service } => {
-                let (fmt_cmd, clippy_cmd, test_cmd) = CargoExecService::rcheck(service.clone());
+                if service.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let (fmt_cmd, clippy_cmd, test_cmd) =
+                    CargoExecService::rcheck(service.clone().unwrap());
 
                 println!("Running rcheck: fmt -> clippy -> test");
 
