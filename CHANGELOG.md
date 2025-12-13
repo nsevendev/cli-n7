@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/nsevendev/cli-n7/compare/v0.6.0...v0.6.1) (2025-12-13)
+
+
+### Bug Fixes
+
+* service not provided by the user ([d63d47b](https://github.com/nsevendev/cli-n7/commit/d63d47bdd7f26a898685bc3cee6a1b9819e14b5a))
+
 ## [0.6.0](https://github.com/nsevendev/cli-n7/compare/v0.5.0...v0.6.0) (2025-12-13)
 
 
