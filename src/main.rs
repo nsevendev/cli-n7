@@ -29,10 +29,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    #[command(
-        short_flag = 'v',
-        about = "Print Version info"
-    )]
+    #[command(short_flag = 'v', about = "Print Version info")]
     Version,
 
     #[command(

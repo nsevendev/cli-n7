@@ -10,21 +10,13 @@ use std::process::Command;
 pub enum DockerComposeCommands {
     #[command(name = "u", about = "Command 'up' with options")]
     Up {
-        #[arg(
-            short,
-            long,
-            help = "Build images before starting containers"
-        )]
+        #[arg(short, long, help = "Build images before starting containers")]
         build: bool,
 
         #[arg(short, long, help = "Do not run in detached mode")]
         no_detach: bool,
 
-        #[arg(
-            short = 'e',
-            long,
-            help = "Path to the environment file"
-        )]
+        #[arg(short = 'e', long, help = "Path to the environment file")]
         env_file: Option<String>,
 
         #[arg(short = 'f', long, help = "Path to the compose file")]
@@ -48,19 +40,12 @@ pub enum DockerComposeCommands {
         rmorphans: bool,
     },
 
-    #[command(
-        name = "s",
-        about = "Connect to service shell (interactive mode)"
-    )]
+    #[command(name = "s", about = "Connect to service shell (interactive mode)")]
     Shell {
         #[arg(help = "Service name to connect to")]
         service: String,
 
-        #[arg(
-            short = 's',
-            long,
-            help = "Shell to use (default: bash)"
-        )]
+        #[arg(short = 's', long, help = "Shell to use (default: bash)")]
         shell: Option<String>,
     },
 
@@ -91,10 +76,7 @@ pub enum DockerComposeCommands {
         #[arg(help = "Docker service name")]
         service: String,
 
-        #[arg(
-            last = true,
-            help = "Additional arguments for cargo test"
-        )]
+        #[arg(last = true, help = "Additional arguments for cargo test")]
         args: Option<Vec<String>>,
     },
 
@@ -103,10 +85,7 @@ pub enum DockerComposeCommands {
         #[arg(help = "Docker service name")]
         service: String,
 
-        #[arg(
-            last = true,
-            help = "Additional arguments for cargo fmt"
-        )]
+        #[arg(last = true, help = "Additional arguments for cargo fmt")]
         args: Option<Vec<String>>,
     },
 
@@ -115,17 +94,11 @@ pub enum DockerComposeCommands {
         #[arg(help = "Docker service name")]
         service: String,
 
-        #[arg(
-            last = true,
-            help = "Additional arguments for cargo clippy"
-        )]
+        #[arg(last = true, help = "Additional arguments for cargo clippy")]
         args: Option<Vec<String>>,
     },
 
-    #[command(
-        name = "rcheck",
-        about = "Run fmt, clippy, and test in sequence"
-    )]
+    #[command(name = "rcheck", about = "Run fmt, clippy, and test in sequence")]
     Rcheck {
         #[arg(help = "Docker service name")]
         service: String,
