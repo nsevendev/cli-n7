@@ -129,12 +129,12 @@ show_completion() {
 # Main
 main() {
     echo ""
-    echo "    ███╗   ██╗${BLUE}███████╗${NC}"
-    echo "    ████╗  ██║${BLUE}╚════██║${NC}"
-    echo "    ██╔██╗ ██║${BLUE}    ██╔╝${NC}"
-    echo "    ██║╚██╗██║${BLUE}   ██╔╝${NC}"
-    echo "    ██║ ╚████║${BLUE}   ██║${NC}"
-    echo "    ╚═╝  ╚═══╝${BLUE}   ╚═╝${NC}"
+    echo "    ███╗   ██╗███████╗"
+    echo "    ████╗  ██║╚════██║"
+    echo "    ██╔██╗ ██║    ██╔╝"
+    echo "    ██║╚██╗██║   ██╔╝"
+    echo "    ██║ ╚████║   ██║"
+    echo "    ╚═╝  ╚═══╝   ╚═╝"
     echo ""
     echo "    Install ${BIN_NAME}"
     echo ""
