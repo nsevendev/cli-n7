@@ -1,10 +1,12 @@
 use super::service::up::UpService;
 use crate::docker_compose::service::cargo_exec::CargoExecService;
 use crate::docker_compose::service::down::DownService;
+use crate::docker_compose::service::exec::ExecService;
 use crate::docker_compose::service::logs::LogsService;
 use crate::docker_compose::service::shell::ShellService;
 use crate::resolvers::ComposeServices;
 use clap::Subcommand;
+use colored::Colorize;
 use std::process::Command;
 
 #[derive(Subcommand)]
@@ -63,6 +65,15 @@ pub enum DockerComposeCommands {
         no_follow: bool,
     },
 
+    #[command(name = "ex", about = "Execute custom command in service container")]
+    Exec {
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
+
+        #[arg(last = true, help = "Command and arguments to execute")]
+        args: Option<Vec<String>>,
+    },
+
     #[command(name = "c", about = "Execute custom cargo command")]
     Cargo {
         #[arg(help = "Docker service name (optional, lists available services if not provided)")]
@@ -99,7 +110,16 @@ pub enum DockerComposeCommands {
         args: Option<Vec<String>>,
     },
 
-    #[command(name = "rcheck", about = "Run fmt, clippy, and test in sequence")]
+    #[command(name = "ccov", about = "Run cargo llvm-cov")]
+    CargoLlvmCov {
+        #[arg(help = "Docker service name (optional, lists available services if not provided)")]
+        service: Option<String>,
+
+        #[arg(last = true, help = "Additional arguments for cargo llvm-cov")]
+        args: Option<Vec<String>>,
+    },
+
+    #[command(name = "cck", about = "Run fmt, clippy, and test in sequence")]
     Rcheck {
         #[arg(help = "Docker service name (optional, lists available services if not provided)")]
         service: Option<String>,
@@ -186,6 +206,29 @@ impl DockerComposeCommands {
                 }
 
                 let status = Command::new(&args[0]).args(&args[1..]).status()?;
+
+                if status.success() {
+                    Ok(())
+                } else {
+                    Err(format!("Command failed with exit code: {:?}", status.code()).into())
+                }
+            }
+
+            DockerComposeCommands::Exec { service, args } => {
+                if service.is_none() || args.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let cmd_args = ExecService::exec(service.clone().unwrap(), args.clone().unwrap());
+
+                println!("Command execute : {}", cmd_args.join(" "));
+
+                if std::env::var("N7_DRY_RUN").is_ok() {
+                    return Ok(());
+                }
+
+                let status = Command::new(&cmd_args[0]).args(&cmd_args[1..]).status()?;
 
                 if status.success() {
                     Ok(())
@@ -287,6 +330,29 @@ impl DockerComposeCommands {
                 }
             }
 
+            DockerComposeCommands::CargoLlvmCov { service, args } => {
+                if service.is_none() {
+                    ComposeServices::display_available_services();
+                    return Ok(());
+                }
+
+                let cmd_args = CargoExecService::llvm_cov(service.clone().unwrap(), args.clone());
+
+                println!("Command execute : {}", cmd_args.join(" "));
+
+                if std::env::var("N7_DRY_RUN").is_ok() {
+                    return Ok(());
+                }
+
+                let status = Command::new(&cmd_args[0]).args(&cmd_args[1..]).status()?;
+
+                if status.success() {
+                    Ok(())
+                } else {
+                    Err(format!("Command failed with exit code: {:?}", status.code()).into())
+                }
+            }
+
             DockerComposeCommands::Rcheck { service } => {
                 if service.is_none() {
                     ComposeServices::display_available_services();
@@ -302,6 +368,11 @@ impl DockerComposeCommands {
                     println!("Command execute : {}", fmt_cmd.join(" "));
                     println!("Command execute : {}", clippy_cmd.join(" "));
                     println!("Command execute : {}", test_cmd.join(" "));
+                    println!();
+                    println!("{}", "✓ All checks passed successfully!".green().bold());
+                    println!("{}", "  → Format (cargo fmt): OK".green());
+                    println!("{}", "  → Linter (cargo clippy): OK".green());
+                    println!("{}", "  → Tests (cargo test): OK".green());
                     return Ok(());
                 }
 
@@ -337,7 +408,11 @@ impl DockerComposeCommands {
                     .into());
                 }
 
-                println!("All checks passed!");
+                println!();
+                println!("{}", "✓ All checks passed successfully!".green().bold());
+                println!("{}", "  → Format (cargo fmt): OK".green());
+                println!("{}", "  → Linter (cargo clippy): OK".green());
+                println!("{}", "  → Tests (cargo test): OK".green());
                 Ok(())
             }
         }

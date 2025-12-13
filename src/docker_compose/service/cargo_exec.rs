@@ -1,4 +1,4 @@
-use crate::cargo_cmd::{ClippyService, FmtService, TestService};
+use crate::cargo_cmd::{ClippyService, FmtService, LlvmCovService, TestService};
 use crate::docker_compose::builder::DockerComposeBuilder;
 
 pub struct CargoExecService {}
@@ -16,6 +16,11 @@ impl CargoExecService {
 
     pub fn clippy(service: String, args: Option<Vec<String>>) -> Vec<String> {
         let cargo_args = ClippyService::clippy(args);
+        Self::build_exec_command(service, cargo_args)
+    }
+
+    pub fn llvm_cov(service: String, args: Option<Vec<String>>) -> Vec<String> {
+        let cargo_args = LlvmCovService::llvm_cov(args);
         Self::build_exec_command(service, cargo_args)
     }
 
@@ -96,6 +101,26 @@ mod tests {
         assert_eq!(
             args,
             vec!["docker", "compose", "exec", "app", "cargo", "clippy"]
+        );
+    }
+
+    #[test]
+    fn test_cargo_exec_llvm_cov_without_args() {
+        let _lock = n7::test_utils::lock_test();
+        let args = CargoExecService::llvm_cov("app".to_string(), None);
+        assert_eq!(
+            args,
+            vec!["docker", "compose", "exec", "app", "cargo", "llvm-cov"]
+        );
+    }
+
+    #[test]
+    fn test_cargo_exec_llvm_cov_with_args() {
+        let _lock = n7::test_utils::lock_test();
+        let args = CargoExecService::llvm_cov("app".to_string(), Some(vec!["--html".to_string()]));
+        assert_eq!(
+            args,
+            vec!["docker", "compose", "exec", "app", "cargo", "llvm-cov", "--html"]
         );
     }
 

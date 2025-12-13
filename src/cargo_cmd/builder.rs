@@ -31,6 +31,11 @@ impl CargoBuilder {
         self
     }
 
+    pub fn llvm_cov(mut self) -> Self {
+        self.args.push("llvm-cov".to_string());
+        self
+    }
+
     pub fn add_args(mut self, args: Vec<String>) -> Self {
         self.args.extend(args);
         self
@@ -102,5 +107,21 @@ mod tests {
             .clippy()
             .add_args(vec!["--fix".to_string()]);
         assert_eq!(cb.args, vec!["clippy", "--fix"]);
+    }
+
+    #[test]
+    fn create_llvm_cov_cargo_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let cb = CargoBuilder::new().llvm_cov();
+        assert_eq!(cb.args, vec!["llvm-cov"]);
+    }
+
+    #[test]
+    fn create_llvm_cov_with_args_cargo_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let cb = CargoBuilder::new()
+            .llvm_cov()
+            .add_args(vec!["--html".to_string()]);
+        assert_eq!(cb.args, vec!["llvm-cov", "--html"]);
     }
 }

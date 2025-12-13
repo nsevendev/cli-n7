@@ -83,11 +83,33 @@ fn test_dc_cargo_clippy_with_args() {
 }
 
 #[test]
-fn test_dc_rcheck() {
+fn test_dc_cargo_llvm_cov_without_args() {
     let _lock = n7::test_utils::lock_test();
     let mut cmd = cargo_bin_cmd!("n7");
     cmd.env("N7_DRY_RUN", "1")
-        .args(&["dc", "rcheck", "app"])
+        .args(&["dc", "ccov", "app"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("exec app cargo llvm-cov"));
+}
+
+#[test]
+fn test_dc_cargo_llvm_cov_with_args() {
+    let _lock = n7::test_utils::lock_test();
+    let mut cmd = cargo_bin_cmd!("n7");
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "ccov", "app", "--", "--html"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("exec app cargo llvm-cov --html"));
+}
+
+#[test]
+fn test_dc_cck() {
+    let _lock = n7::test_utils::lock_test();
+    let mut cmd = cargo_bin_cmd!("n7");
+    cmd.env("N7_DRY_RUN", "1")
+        .args(&["dc", "cck", "app"])
         .assert()
         .success()
         .stdout(predicate::str::contains(
@@ -95,5 +117,6 @@ fn test_dc_rcheck() {
         ))
         .stdout(predicate::str::contains("exec app cargo fmt"))
         .stdout(predicate::str::contains("exec app cargo clippy"))
-        .stdout(predicate::str::contains("exec app cargo test"));
+        .stdout(predicate::str::contains("exec app cargo test"))
+        .stdout(predicate::str::contains("All checks passed successfully!"));
 }
