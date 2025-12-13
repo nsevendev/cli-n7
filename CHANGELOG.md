@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/nsevendev/cli-n7/compare/v0.5.0...v0.6.0) (2025-12-13)
+
+
+### Features
+
+* add style ([7d3cef8](https://github.com/nsevendev/cli-n7/commit/7d3cef8dbd1d5aa8e42659b35aa0e539b2ef6aa8))
+
+
+### Bug Fixes
+
+* qa format ([9891251](https://github.com/nsevendev/cli-n7/commit/9891251dd76069ef7b1a129159c0aca944799222))
+
 ## [0.5.0](https://github.com/nsevendev/cli-n7/compare/v0.4.0...v0.5.0) (2025-12-12)
 
 
