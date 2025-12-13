@@ -36,19 +36,14 @@ impl ComposeServices {
     pub fn display_available_services() {
         match Self::list() {
             Ok(services) => {
-                println!(
-                    "\n{} {}",
-                    "📦".blue(),
-                    "Available services in docker-compose file:".cyan().bold()
-                );
+                println!("\n{}", "Available services in docker-compose file :".cyan());
                 println!("{}", "────────────────────────────────────────────".blue());
                 for service in services {
                     println!("  {} {}", "•".green(), service.yellow());
                 }
                 println!("{}", "────────────────────────────────────────────".blue());
                 println!(
-                    "\n{} {}\n",
-                    "💡".yellow(),
+                    "\n{}\n",
                     "Usage: n7 dc <command> <service_name>".white().dimmed()
                 );
             }

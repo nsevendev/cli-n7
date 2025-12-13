@@ -1,18 +1,19 @@
 #!/bin/bash
 set -e
 
-# Couleurs pour l'affichage
+# Colors for display
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-REPO="nsevendev/cli-n7"  # Remplacez par votre repo GitHub (owner/repo)
+REPO="nsevendev/cli-n7"  # Replace with your GitHub repo (owner/repo)
 BIN_NAME="n7"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/.local/bin}"
 
-# Fonction pour afficher les messages
+# Functions to display messages
 info() {
     echo -e "${GREEN}[INFO]${NC} $1"
 }
@@ -26,7 +27,7 @@ error() {
     exit 1
 }
 
-# Détection de l'OS et de l'architecture
+# Detect OS and architecture
 detect_platform() {
     local os=$(uname -s | tr '[:upper:]' '[:lower:]')
     local arch=$(uname -m)
@@ -39,7 +40,7 @@ detect_platform() {
             OS="macos"
             ;;
         *)
-            error "OS non supporté: $os"
+            error "Unsupported OS: $os"
             ;;
     esac
 
@@ -51,75 +52,75 @@ detect_platform() {
             ARCH="aarch64"
             ;;
         *)
-            error "Architecture non supportée: $arch"
+            error "Unsupported architecture: $arch"
             ;;
     esac
 
     PLATFORM="${OS}-${ARCH}"
-    info "Plateforme détectée: ${PLATFORM}"
+    info "Detected platform: ${PLATFORM}"
 }
 
-# Récupérer la dernière version
+# Get latest version
 get_latest_version() {
-    info "Récupération de la dernière version..."
+    info "Fetching latest version..."
 
     VERSION=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
     if [ -z "$VERSION" ]; then
-        error "Impossible de récupérer la dernière version"
+        error "Unable to fetch latest version"
     fi
 
-    info "Dernière version: ${VERSION}"
+    info "Latest version: ${VERSION}"
 }
 
-# Télécharger et installer le binaire
+# Download and install binary
 download_and_install() {
     local download_url="https://github.com/${REPO}/releases/download/${VERSION}/${BIN_NAME}-${PLATFORM}.tar.gz"
     local tmp_dir=$(mktemp -d)
     local tmp_file="${tmp_dir}/${BIN_NAME}.tar.gz"
 
-    info "Téléchargement depuis: ${download_url}"
+    info "Downloading from: ${download_url}"
 
     if ! curl -fsSL -o "${tmp_file}" "${download_url}"; then
-        error "Échec du téléchargement"
+        error "Download failed"
     fi
 
-    info "Extraction..."
+    info "Extracting..."
     tar -xzf "${tmp_file}" -C "${tmp_dir}"
 
-    # Créer le répertoire d'installation si nécessaire
+    # Create installation directory if needed
     mkdir -p "${INSTALL_DIR}"
 
-    info "Installation dans ${INSTALL_DIR}..."
+    info "Installing to ${INSTALL_DIR}..."
     mv "${tmp_dir}/${BIN_NAME}" "${INSTALL_DIR}/${BIN_NAME}"
     chmod +x "${INSTALL_DIR}/${BIN_NAME}"
 
-    # Nettoyage
+    # Cleanup
     rm -rf "${tmp_dir}"
 
-    info "Installation terminée!"
+    info "Installation completed!"
 }
 
-# Vérifier si le répertoire d'installation est dans le PATH
+# Check if installation directory is in PATH
 check_path() {
     if [[ ":$PATH:" != *":${INSTALL_DIR}:"* ]]; then
-        warn "Le répertoire ${INSTALL_DIR} n'est pas dans votre PATH"
+        warn "The directory ${INSTALL_DIR} is not in your PATH"
         echo ""
-        echo "Ajoutez cette ligne à votre ~/.bashrc ou ~/.zshrc :"
+        echo "Add this line to your ~/.bashrc or ~/.zshrc:"
         echo ""
         echo "    export PATH=\"${INSTALL_DIR}:\$PATH\""
         echo ""
     else
-        info "Le binaire est installé et disponible dans votre PATH"
+        info "Binary is installed and available in your PATH"
     fi
 }
 
-# Afficher les instructions finales
+# Display final instructions
 show_completion() {
     echo ""
-    echo -e "${GREEN}✓ Installation réussie!${NC}"
+    echo -e "${GREEN}✓ Installation successful!${NC}"
     echo ""
-    echo "Pour commencer à utiliser ${BIN_NAME}, tapez:"
+    echo "To start using ${BIN_NAME}, type:"
     echo ""
     echo "    ${BIN_NAME} --help"
     echo ""
@@ -127,9 +128,15 @@ show_completion() {
 
 # Main
 main() {
-    echo "═══════════════════════════════════════"
-    echo "  Installation de ${BIN_NAME}"
-    echo "═══════════════════════════════════════"
+    echo ""
+    echo "    ███╗   ██╗${BLUE}███████╗${NC}"
+    echo "    ████╗  ██║${BLUE}╚════██║${NC}"
+    echo "    ██╔██╗ ██║${BLUE}    ██╔╝${NC}"
+    echo "    ██║╚██╗██║${BLUE}   ██╔╝${NC}"
+    echo "    ██║ ╚████║${BLUE}   ██║${NC}"
+    echo "    ╚═╝  ╚═══╝${BLUE}   ╚═╝${NC}"
+    echo ""
+    echo "    Install ${BIN_NAME}"
     echo ""
 
     detect_platform
