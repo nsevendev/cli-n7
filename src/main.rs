@@ -1,4 +1,5 @@
 mod cargo_cmd;
+mod constants;
 mod docker_compose;
 mod resolvers;
 
@@ -9,18 +10,18 @@ use colored::Colorize;
 
 fn styles() -> Styles {
     Styles::styled()
-        .context(AnsiColor::Yellow.on_default())
-        .header(AnsiColor::Magenta.on_default())
-        .usage(AnsiColor::Magenta.on_default())
+        .context(AnsiColor::Blue.on_default())
+        .header(AnsiColor::Yellow.on_default())
+        .usage(AnsiColor::Yellow.on_default())
         .literal(AnsiColor::Green.on_default())
-        .placeholder(AnsiColor::Yellow.on_default())
+        .placeholder(AnsiColor::BrightBlue.on_default())
         .error(AnsiColor::Red.on_default())
         .valid(AnsiColor::Green.on_default())
-        .invalid(AnsiColor::Yellow.on_default())
+        .invalid(AnsiColor::BrightBlue.on_default())
 }
 
 #[derive(Parser)]
-#[command(name = "n7", about = "\x1b[33mCli nseven\x1b[0m", styles = styles())]
+#[command(name = "n7", about = constants::home_banner(), styles = styles())]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -29,13 +30,16 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     #[command(
-        long_flag = "version",
         short_flag = 'v',
-        about = "\x1b[33mPrint Version info\x1b[0m"
+        about = "Print Version info"
     )]
     Version,
 
-    #[command(name = "dc", about = "\x1b[33mExecute docker compose\x1b[0m")]
+    #[command(
+        name = "dc",
+        about = "Execute docker compose commands",
+        long_about = constants::dc_banner()
+    )]
     DockerCompose {
         #[command(subcommand)]
         action: DockerComposeCommands,
@@ -47,7 +51,8 @@ fn main() {
 
     match cli.command {
         Commands::Version => {
-            println!("{}", get_version());
+            println!("{}\n", constants::version_banner());
+            println!("{}\n", get_version());
         }
         Commands::DockerCompose { action } => {
             action.execute().unwrap_or_else(|e| {

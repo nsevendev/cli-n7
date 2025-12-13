@@ -8,126 +8,126 @@ use std::process::Command;
 
 #[derive(Subcommand)]
 pub enum DockerComposeCommands {
-    #[command(name = "u", about = "\x1b[33mCommand 'up' with options\x1b[0m")]
+    #[command(name = "u", about = "Command 'up' with options")]
     Up {
         #[arg(
             short,
             long,
-            help = "\x1b[33mBuild images before starting containers\x1b[0m"
+            help = "Build images before starting containers"
         )]
         build: bool,
 
-        #[arg(short, long, help = "\x1b[33mDo not run in detached mode\x1b[0m")]
+        #[arg(short, long, help = "Do not run in detached mode")]
         no_detach: bool,
 
         #[arg(
             short = 'e',
             long,
-            help = "\x1b[33mPath to the environment file\x1b[0m"
+            help = "Path to the environment file"
         )]
         env_file: Option<String>,
 
-        #[arg(short = 'f', long, help = "\x1b[33mPath to the compose file\x1b[0m")]
+        #[arg(short = 'f', long, help = "Path to the compose file")]
         compose_file: Option<String>,
     },
 
-    #[command(name = "d", about = "\x1b[33mCommand 'down' with options\x1b[0m")]
+    #[command(name = "d", about = "Command 'down' with options")]
     Down {
         #[arg(
             short = 'v',
             long = "rmv",
-            help = "\x1b[33mDelete all volume of service in compose file\x1b[0m"
+            help = "Delete all volume of service in compose file"
         )]
         rmvolumes: bool,
 
         #[arg(
             short = 'o',
             long = "rmo",
-            help = "\x1b[33mDelete container orphans not in compose file\x1b[0m"
+            help = "Delete container orphans not in compose file"
         )]
         rmorphans: bool,
     },
 
     #[command(
         name = "s",
-        about = "\x1b[33mConnect to service shell (interactive mode)\x1b[0m"
+        about = "Connect to service shell (interactive mode)"
     )]
     Shell {
-        #[arg(help = "\x1b[33mService name to connect to\x1b[0m")]
+        #[arg(help = "Service name to connect to")]
         service: String,
 
         #[arg(
             short = 's',
             long,
-            help = "\x1b[33mShell to use (default: bash)\x1b[0m"
+            help = "Shell to use (default: bash)"
         )]
         shell: Option<String>,
     },
 
-    #[command(name = "l", about = "\x1b[33mShow logs from services\x1b[0m")]
+    #[command(name = "l", about = "Show logs from services")]
     Logs {
-        #[arg(help = "\x1b[33mService name (optional, default: all services)\x1b[0m")]
+        #[arg(help = "Service name (optional, default: all services)")]
         service: Option<String>,
 
         #[arg(
             short = 'n',
             long = "no-follow",
-            help = "\x1b[33mDisable follow mode (default: follow enabled)\x1b[0m"
+            help = "Disable follow mode (default: follow enabled)"
         )]
         no_follow: bool,
     },
 
-    #[command(name = "c", about = "\x1b[33mExecute custom cargo command\x1b[0m")]
+    #[command(name = "c", about = "Execute custom cargo command")]
     Cargo {
-        #[arg(help = "\x1b[33mDocker service name\x1b[0m")]
+        #[arg(help = "Docker service name")]
         service: String,
 
-        #[arg(last = true, help = "\x1b[33mCargo command and arguments\x1b[0m")]
+        #[arg(last = true, help = "Cargo command and arguments")]
         args: Vec<String>,
     },
 
-    #[command(name = "ct", about = "\x1b[33mRun cargo test\x1b[0m")]
+    #[command(name = "ct", about = "Run cargo test")]
     CargoTest {
-        #[arg(help = "\x1b[33mDocker service name\x1b[0m")]
+        #[arg(help = "Docker service name")]
         service: String,
 
         #[arg(
             last = true,
-            help = "\x1b[33mAdditional arguments for cargo test\x1b[0m"
+            help = "Additional arguments for cargo test"
         )]
         args: Option<Vec<String>>,
     },
 
-    #[command(name = "cf", about = "\x1b[33mRun cargo fmt\x1b[0m")]
+    #[command(name = "cf", about = "Run cargo fmt")]
     CargoFmt {
-        #[arg(help = "\x1b[33mDocker service name\x1b[0m")]
+        #[arg(help = "Docker service name")]
         service: String,
 
         #[arg(
             last = true,
-            help = "\x1b[33mAdditional arguments for cargo fmt\x1b[0m"
+            help = "Additional arguments for cargo fmt"
         )]
         args: Option<Vec<String>>,
     },
 
-    #[command(name = "cc", about = "\x1b[33mRun cargo clippy\x1b[0m")]
+    #[command(name = "cc", about = "Run cargo clippy")]
     CargoClippy {
-        #[arg(help = "\x1b[33mDocker service name\x1b[0m")]
+        #[arg(help = "Docker service name")]
         service: String,
 
         #[arg(
             last = true,
-            help = "\x1b[33mAdditional arguments for cargo clippy\x1b[0m"
+            help = "Additional arguments for cargo clippy"
         )]
         args: Option<Vec<String>>,
     },
 
     #[command(
         name = "rcheck",
-        about = "\x1b[33mRun fmt, clippy, and test in sequence\x1b[0m"
+        about = "Run fmt, clippy, and test in sequence"
     )]
     Rcheck {
-        #[arg(help = "\x1b[33mDocker service name\x1b[0m")]
+        #[arg(help = "Docker service name")]
         service: String,
     },
 }
