@@ -70,6 +70,9 @@ pub enum DockerComposeCommands {
         #[arg(help = "Docker service name (optional, lists available services if not provided)")]
         service: Option<String>,
 
+        #[arg(short = 'd', long = "detach", help = "Run command in detached mode")]
+        detach: bool,
+
         #[arg(last = true, help = "Command and arguments to execute")]
         args: Option<Vec<String>>,
     },
@@ -214,13 +217,18 @@ impl DockerComposeCommands {
                 }
             }
 
-            DockerComposeCommands::Exec { service, args } => {
+            DockerComposeCommands::Exec {
+                service,
+                detach,
+                args,
+            } => {
                 if service.is_none() || args.is_none() {
                     ComposeServices::display_available_services();
                     return Ok(());
                 }
 
-                let cmd_args = ExecService::exec(service.clone().unwrap(), args.clone().unwrap());
+                let cmd_args =
+                    ExecService::exec(service.clone().unwrap(), *detach, args.clone().unwrap());
 
                 println!("Command execute : {}", cmd_args.join(" "));
 

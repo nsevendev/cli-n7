@@ -85,6 +85,11 @@ impl DockerComposeBuilder {
         self.args.push("-f".to_string());
         self
     }
+
+    pub fn add_detach(mut self) -> Self {
+        self.args.push("-d".to_string());
+        self
+    }
 }
 
 #[cfg(test)]
@@ -266,5 +271,33 @@ mod tests {
             .add_follow()
             .add_service("app".to_string());
         assert_eq!(dcb.args, vec!["logs", "-f", "app"]);
+    }
+
+    #[test]
+    fn create_exec_with_detach_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new().exec().add_detach();
+        assert_eq!(dcb.args, vec!["exec", "-d"]);
+    }
+
+    #[test]
+    fn create_exec_with_detach_and_service_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .exec()
+            .add_detach()
+            .add_service("app".to_string());
+        assert_eq!(dcb.args, vec!["exec", "-d", "app"]);
+    }
+
+    #[test]
+    fn create_exec_with_detach_service_and_shell_docker_compose_builder() {
+        let _lock = n7::test_utils::lock_test();
+        let dcb = DockerComposeBuilder::new()
+            .exec()
+            .add_detach()
+            .add_service("my_service".to_string())
+            .add_shell("bash".to_string());
+        assert_eq!(dcb.args, vec!["exec", "-d", "my_service", "bash"]);
     }
 }
