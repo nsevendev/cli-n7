@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/nsevendev/cli-n7/compare/v0.7.0...v0.7.1) (2025-12-18)
+
+
+### Bug Fixes
+
+* add option for command "ex" ([5c8a857](https://github.com/nsevendev/cli-n7/commit/5c8a857f1005c3e514635ffea59d7218251d5f2b))
+
 ## [0.7.0](https://github.com/nsevendev/cli-n7/compare/v0.6.3...v0.7.0) (2025-12-13)
 
 
